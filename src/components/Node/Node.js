@@ -1,25 +1,27 @@
 import React from "react";
 import "./Node.css";
 
+const a = '';
 class Node extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
-    const { isStart, isFinish } = this.props;
-    if (isStart) {
-      console.log("isStart");
-    } else if (isFinish) {
-      console.log("isFinish");
-    }
+    const {
+      col,
+      isFinish,
+      isStart,
+      isWall,
+      onMouseDown,
+      onMouseEnter,
+      onMouseUp,
+      row,
+    } = this.props;
     const extraClassName = isFinish
       ? "node-finish"
       : isStart
       ? "node-start"
-      : "";
-    return <div className={`node ${extraClassName}`}></div>;
+      : isWall
+      ? 'node-wall'
+      : '';
+    return <div id={`node-${row}-${col}`} className={`node ${extraClassName}`} onMouseDown={() => onMouseDown(row, col)} onMouseEnter={() => onMouseEnter(row, col)} onMouseUp={() => onMouseUp()}>{a}</div>;
   }
 }
 
