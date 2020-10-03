@@ -2,8 +2,8 @@ const direction_row = [-1, 1, 0, 0];
 const direction_col = [0, 0, 1, -1];
 
 const [row_queue, col_queue] = [[], []];
+
 export function bfs(grid, startNode) {
-  grid = grid.slice();
   const forPathReconstruction = new Array(grid.length * grid[0].length);
   const visitedNodesInOrder = [];
   row_queue.push(startNode.row);
@@ -15,7 +15,6 @@ export function bfs(grid, startNode) {
     if (grid[at_row][at_col].isFinish) {
       break;
     }
-    console.log("while");
     updateUnvisitedNeibours(
       grid,
       forPathReconstruction,
@@ -24,7 +23,6 @@ export function bfs(grid, startNode) {
       at_col
     );
 	}
-	console.log("For Path Reconstruction", forPathReconstruction)
   return [visitedNodesInOrder, forPathReconstruction];
 }
 
@@ -60,7 +58,7 @@ function updateUnvisitedNeibours(
   }
 }
 
-export function getNodesInShortestPathOrder(
+export function getNodesInShortestPathOrderBFS(
   grid,
   forPathReconstruction,
   startNode,
@@ -83,3 +81,5 @@ export function getNodesInShortestPathOrder(
     return [];
   }
 }
+
+

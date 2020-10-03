@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 let currentAlgo = "";
-const Navbars = ({ visualizeBfs, resetGrid }) => {
+const Navbars = ({ visualizeBfs, visualizeDijkstra }) => {
   return (
     <Navbar bg="primary" expand="lg">
       <Navbar.Brand>PathFinding Visulizer</Navbar.Brand>
@@ -44,6 +44,8 @@ const Navbars = ({ visualizeBfs, resetGrid }) => {
                 document.getElementById("Vizu").innerHTML = "Select Algorithm";
               } else if (currentAlgo === "BFS") {
                 visualizeBfs();
+              } else if (currentAlgo === "Dijkstra") {
+                visualizeDijkstra();
               }
             }}
           >

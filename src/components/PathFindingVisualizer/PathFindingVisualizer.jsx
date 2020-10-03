@@ -1,7 +1,11 @@
 import React from "react";
 import Node from "../Node/Node";
 import Navbars from "../Navbars/Navbars";
-import { bfs, getNodesInShortestPathOrder } from "../../algorithms/BFS";
+import { bfs, getNodesInShortestPathOrderBFS } from "../../algorithms/BFS";
+import {
+  dijkstra,
+  getNodesInShortestPathOrderDijkstra,
+} from "../../algorithms/Dijkstra";
 import "./PathFindingVisualizer.css";
 
 const TOTAL_ROW = 21;
@@ -22,16 +26,18 @@ const getInitialGrid = () => {
     }
     grid.push(currentRow);
   }
+  
   return grid;
 };
 
 const createNode = (row, col) => {
+  
   return {
     row,
     col,
     isStart: row === STARTING_ROW && col === STARTING_COL,
     isFinish: row === ENDING_ROW && col === ENDING_COL,
-    distance: Infinity,
+    isWeighted: false,
     isVisited: false,
     isWall: false,
     previousNode: null,
@@ -50,6 +56,7 @@ const getNewGridWithWallToggled = (grid, row, col) => {
 };
 
 class PathFindingVisualizer extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -91,8 +98,7 @@ class PathFindingVisualizer extends React.Component {
     }
   }
 
-  animateBFS(visitedNodesInOrder, nodesInShortestOrder) {
-    console.log(visitedNodesInOrder);
+  animateAlgo(visitedNodesInOrder, nodesInShortestOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -107,28 +113,59 @@ class PathFindingVisualizer extends React.Component {
       }, 10 * i);
     }
   }
+  visualizeDijkstra = () => {
+    let { grid } = this.state;
+    const startNode = grid[STARTING_ROW][STARTING_COL];
+    const endNode = grid[ENDING_ROW][ENDING_COL];
+    const [dist, forPathReconstruction, visitedNodesInOrder] = dijkstra(
+      grid,
+      startNode
+    );
+    // console.log([dist, forPathReconstruction, visitedNodesInOrder])
+    const nodesInShortestOrder = getNodesInShortestPathOrderDijkstra(
+      
+      grid,
+
+           dist,
+
+           forPathReconstruction,
+     
+      endNode
+    
+    );
+    console.log(nodesInShortestOrder);
+    this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+  };
 
   visualizeBFS = () => {
     let { grid } = this.state;
     const startNode = grid[STARTING_ROW][STARTING_COL];
     const endNode = grid[ENDING_ROW][ENDING_COL];
     const [visitedNodesInOrder, forPathReconstruction] = bfs(grid, startNode);
-    console.log("Visualize", visitedNodesInOrder.length);
-    const nodesInShortestOrder = getNodesInShortestPathOrder(
+    const nodesInShortestOrder = getNodesInShortestPathOrderBFS(
       grid,
       forPathReconstruction,
       startNode,
       endNode
     );
-    this.animateBFS(visitedNodesInOrder, nodesInShortestOrder);
+    this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
   };
 
   render() {
     const { grid } = this.state;
     return (
       <div>
-        <Navbars visualizeBfs={this.visualizeBFS}></Navbars>
-
+        <Navbars
+         
+         
+          visualizeBfs={this.visualizeBFS}
+         
+         
+          visualizeDijkstra={this.visualizeDijkstra}
+        
+        
+        ></Navbars>
+        <button onClick={() => this.visualizeDijkstra()}>Viz</button>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
