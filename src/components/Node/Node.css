@@ -11,6 +11,8 @@
 
 .node-start {
   background-color: green;
+  width: 25px;
+  height: 25px;
 }
 
 .node-visited {
@@ -50,6 +52,9 @@
     background-color: rgb(12, 53, 71);
   }
   
+  .node-weight{
+    background-color: pink;
+  }
   .node-shortest-path {
     animation-name: shortestPath;
     animation-duration: 1.5s;

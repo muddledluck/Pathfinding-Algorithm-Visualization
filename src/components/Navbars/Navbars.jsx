@@ -6,7 +6,13 @@ import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 let currentAlgo = "";
-const Navbars = ({ visualizeBfs, visualizeDijkstra }) => {
+export let wallOrWeight = "wall";
+export const Navbars = ({
+  visualizeBfs,
+  visualizeDijkstra,
+  resetGrid,
+  resetPath,
+}) => {
   return (
     <Navbar bg="primary" expand="lg">
       <Navbar.Brand>PathFinding Visulizer</Navbar.Brand>
@@ -51,10 +57,30 @@ const Navbars = ({ visualizeBfs, visualizeDijkstra }) => {
           >
             Algorithm
           </Button>
+          <Button id="resetGrid" variant="info" onClick={() => resetGrid()}>
+            Clear Grid
+          </Button>
+          <Button id="resetPath" variant="info" onClick={() => resetPath()}>
+            Clear Path
+          </Button>
+          <NavDropdown title="Wall or Weight" id="basic-nav-dropdown">
+            <NavDropdown.Item
+              onClick={() => {
+                wallOrWeight = "wall";
+              }}
+            >
+              Wall
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              onClick={() => {
+                wallOrWeight = "weight";
+              }}
+            >
+              Weight
+            </NavDropdown.Item>
+          </NavDropdown>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
   );
 };
-
-export default Navbars;

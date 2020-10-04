@@ -20,7 +20,7 @@ export function dijkstra(grid, startNode) {
       continue;
     }
 
-    let neibours = neiboursUnvisitedNode(grid, val);
+    let neibours = neiboursUnvisitedNode(grid, val, visitedNodesInOrder);
     for (let i = 0; i < neibours.length; i++) {
       let [idx, currDist] = neibours[i];
       let at = gridIndexToArrayIndex(grid[0].length, idx[0], idx[1]);
@@ -42,12 +42,12 @@ export function dijkstra(grid, startNode) {
   return [dist, forPathReconstruction, visitedNodesInOrder];
 }
 
-function neiboursUnvisitedNode(grid, val) {
+function neiboursUnvisitedNode(grid, val, visitedNodesInOrder) {
   const direction = [
     [-1, 0],
+    [0, -1],
     [1, 0],
     [0, 1],
-    [0, -1],
   ];
   const neibours = [];
   for (let i = 0; i < 4; i++) {
@@ -64,7 +64,8 @@ function neiboursUnvisitedNode(grid, val) {
     } else if (grid[at[0]][at[1]].isWall) {
       continue;
     } else if (grid[at[0]][at[1]].isWeighted) {
-      weight = 5;
+      visitedNodesInOrder.push(grid[val[0]][val[1]]);;
+        weight = 10;
     } else {
       weight = 1;
     }
@@ -77,6 +78,7 @@ export function getNodesInShortestPathOrderDijkstra(
   grid,
   dist,
   forPathReconstruction,
+  startNode,
   endNode
 ) {
   const at = gridIndexToArrayIndex(grid[0].length, endNode[0], endNode[1]);
@@ -87,11 +89,16 @@ export function getNodesInShortestPathOrderDijkstra(
   for (
     let i = endNode;
     i != null;
-    i = forPathReconstruction[gridIndexToArrayIndex(grid[0].length, i.row, i.col)]
+    i =
+   
+        forPathReconstruction[gridIndexToArrayIndex(grid[0].length, i.row, i.col)]
   ) {
-    console.log("i", i)
     path.push(i);
   }
   path.reverse();
-  return path;
+  if (path[0] === startNode) {
+    return path;;
+  } else {
+    return [];;
+  }
 }
