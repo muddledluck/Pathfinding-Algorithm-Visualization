@@ -6,15 +6,20 @@ import {
   dijkstra,
   getNodesInShortestPathOrderDijkstra,
 } from "../../algorithms/Dijkstra";
+import {
+  A_Star,
+  getNodesInShortestPathOrderAStar,
+} from "../../algorithms/A_Star";
+
 import "./PathFindingVisualizer.css";
 
-const TOTAL_ROW = 21;
-const TOTAL_COL = 55;
+const TOTAL_ROW = 26;
+const TOTAL_COL = 56;
 
-const STARTING_ROW = 10;
+const STARTING_ROW = 13;
 const STARTING_COL = 10;
 
-const ENDING_ROW = 10;
+const ENDING_ROW = 13;
 const ENDING_COL = 45;
 
 const getInitialGrid = () => {
@@ -115,30 +120,30 @@ class PathFindingVisualizer extends React.Component {
   };
 
   handleMouseDown = (row, col) => {
-    if(wallOrWeight === "wall")   {
-          if (!this.state.grid[row][col].isFinish) {
-            const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-            this.setState({ grid: newGrid, mouseIsPressed: true });
-          }
+    if (wallOrWeight === "wall") {
+      if (!this.state.grid[row][col].isFinish) {
+        const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+        this.setState({ grid: newGrid, mouseIsPressed: true });
+      }
     } else if (wallOrWeight === "weight") {
-          if (!this.state.grid[row][col].isFinish) {
-            const newGrid = getNewGridWithWeight(this.state.grid, row, col);
-            this.setState({ gird: newGrid, mouseIsPressed: true });
-          }
+      if (!this.state.grid[row][col].isFinish) {
+        const newGrid = getNewGridWithWeight(this.state.grid, row, col);
+        this.setState({ gird: newGrid, mouseIsPressed: true });
+      }
     }
   };
 
   handleMouseEnter = (row, col) => {
-    if(wallOrWeight === "wall"){
-        if (this.state.mouseIsPressed && !this.state.grid[row][col].isFinish) {
-          const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
-          this.setState({ grid: newGrid });
-        }
-    } else if ( wallOrWeight === "weight") {
-        if (this.state.mouseIsPressed && !this.state.grid[row][col].isFinish) {
-          const newGrid = getNewGridWithWeight(this.state.grid, row, col);
-          this.setState({ grid: newGrid });
-        }
+    if (wallOrWeight === "wall") {
+      if (this.state.mouseIsPressed && !this.state.grid[row][col].isFinish) {
+        const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+        this.setState({ grid: newGrid });
+      }
+    } else if (wallOrWeight === "weight") {
+      if (this.state.mouseIsPressed && !this.state.grid[row][col].isFinish) {
+        const newGrid = getNewGridWithWeight(this.state.grid, row, col);
+        this.setState({ grid: newGrid });
+      }
     }
   };
 
@@ -151,20 +156,17 @@ class PathFindingVisualizer extends React.Component {
       setTimeout(() => {
         const node = nodesInShortestOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
-        "node node-shortest-path";
-            if (node.isWeighted) {
-              document.getElementById(
-                `node-${node.row}-${node.col}`
-              ).className = "node node-shortest-path node-weight";
+          "node node-shortest-path";
+        if (node.isWeighted) {
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            "node node-shortest-path node-weight";
         }
         if (node.isStart) {
-          document.getElementById(
-            `node-${node.row}-${node.col}`
-          ).className = "node node-shortest-path node-start";
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            "node node-shortest-path node-start";
         } else if (node.isFinish) {
-          document.getElementById(
-            `node-${node.row}-${node.col}`
-          ).className = "node node-shortest-path node-finish";
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            "node node-shortest-path node-finish";
         }
       }, 50 * i);
     }
@@ -186,16 +188,13 @@ class PathFindingVisualizer extends React.Component {
           if (node.isWeighted) {
             document.getElementById(`node-${node.row}-${node.col}`).className =
               "node node-visited node-weight";
-            
           }
           if (node.isStart) {
-            document.getElementById(
-              `node-${node.row}-${node.col}`
-            ).className = "node node-shortest-path node-start";
-          }else if (node.isFinish) {
-            document.getElementById(
-              `node-${node.row}-${node.col}`
-            ).className = "node node-shortest-path node-finish";
+            document.getElementById(`node-${node.row}-${node.col}`).className =
+              "node node-shortest-path node-start";
+          } else if (node.isFinish) {
+            document.getElementById(`node-${node.row}-${node.col}`).className =
+              "node node-shortest-path node-finish";
           }
         }, 5);
         document.getElementById(`node-${node.row}-${node.col}`).className =
@@ -203,6 +202,26 @@ class PathFindingVisualizer extends React.Component {
       }, 5 * i);
     }
   }
+
+  visualizeAStar = () => {
+    this.resetPath();
+    let { grid } = this.state;
+    const startNode = grid[STARTING_ROW][STARTING_COL];
+    const endNode = grid[ENDING_ROW][ENDING_COL];
+
+    const [forPathReconstruction, visitedNodesInOrder] = A_Star(
+      grid,
+      startNode,
+      endNode
+    );
+    const nodesInShortestOrder = getNodesInShortestPathOrderAStar(
+      grid,
+      forPathReconstruction,
+      startNode,
+      endNode
+    );
+    this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+  };
   visualizeDijkstra = () => {
     this.resetPath();
     let { grid } = this.state;
@@ -239,22 +258,30 @@ class PathFindingVisualizer extends React.Component {
   };
 
   render() {
-    const { grid, wallorWeight } = this.state;
+    const { grid } = this.state;
     return (
       <div>
         <Navbars
           visualizeBfs={this.visualizeBFS}
           visualizeDijkstra={this.visualizeDijkstra}
+          visualizeAStar={this.visualizeAStar}
           resetGrid={this.resetGrid}
           resetPath={this.resetPath}
-          wallorWeight={wallorWeight}
+          
         ></Navbars>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
               <div key={rowIdx}>
                 {row.map((node, nodeIdx) => {
-                  const { row, col, isStart, isFinish, isWall, isWeighted } = node;
+                  const {
+                    row,
+                    col,
+                    isStart,
+                    isFinish,
+                    isWall,
+                    isWeighted,
+                  } = node;
                   return (
                     <Node
                       key={nodeIdx}

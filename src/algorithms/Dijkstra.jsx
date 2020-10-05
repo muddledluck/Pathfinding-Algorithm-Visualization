@@ -1,8 +1,9 @@
 import { PriortyQueue } from "./priortyQueue";
+import {
+  gridIndexToArrayIndex,
+  neiboursUnvisitedNode,
+} from "./algorithmsHelper";
 
-function gridIndexToArrayIndex(totalCol, currentRow, currentCol) {
-  return totalCol * currentRow + currentCol;
-}
 
 export function dijkstra(grid, startNode) {
   const forPathReconstruction = new Array(grid.length * grid[0].length);
@@ -42,38 +43,6 @@ export function dijkstra(grid, startNode) {
   return [dist, forPathReconstruction, visitedNodesInOrder];
 }
 
-function neiboursUnvisitedNode(grid, val, visitedNodesInOrder) {
-  const direction = [
-    [-1, 0],
-    [0, -1],
-    [1, 0],
-    [0, 1],
-  ];
-  const neibours = [];
-  for (let i = 0; i < 4; i++) {
-    let at = [val[0] + direction[i][0], val[1] + direction[i][1]];
-    let weight;
-
-    if (
-      at[0] < 0 ||
-      at[0] >= grid.length ||
-      at[1] >= grid[0].length ||
-      at[1] < 0
-    ) {
-      continue;
-    } else if (grid[at[0]][at[1]].isWall) {
-      continue;
-    } else if (grid[at[0]][at[1]].isWeighted) {
-      visitedNodesInOrder.push(grid[val[0]][val[1]]);
-        weight = 15;
-    } else {
-      visitedNodesInOrder.push(grid[val[0]][val[1]]);
-      weight = 1;
-    }
-    neibours.push([at, weight]);
-  }
-  return neibours;
-}
 
 export function getNodesInShortestPathOrderDijkstra(
   grid,
@@ -98,8 +67,8 @@ export function getNodesInShortestPathOrderDijkstra(
   }
   path.reverse();
   if (path[0] === startNode) {
-    return path;;
+    return path;
   } else {
-    return [];;
+    return [];
   }
 }

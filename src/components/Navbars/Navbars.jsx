@@ -4,12 +4,14 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./Navbars.css";
 
 let currentAlgo = "";
 export let wallOrWeight = "wall";
 export const Navbars = ({
   visualizeBfs,
   visualizeDijkstra,
+  visualizeAStar,
   resetGrid,
   resetPath,
 }) => {
@@ -24,7 +26,7 @@ export const Navbars = ({
               onClick={() => {
                 const algo = document.getElementById("Vizu");
                 currentAlgo = "Dijkstra";
-                algo.innerHTML = "Dijkstra Algrithm";
+                algo.innerHTML = "Visualize Dijkstra Algrithm";
               }}
             >
               Dijkstra's Shortest Path
@@ -33,10 +35,19 @@ export const Navbars = ({
               onClick={() => {
                 const algo = document.getElementById("Vizu");
                 currentAlgo = "BFS";
-                algo.innerHTML = "Visualize BFS Algorithm";
+                algo.innerHTML = "Visualize BFS Algorithm (Unweighted)";
               }}
             >
               BFS Shortest Path
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              onClick={() => {
+                const algo = document.getElementById("Vizu");
+                currentAlgo = "AStar";
+                algo.innerHTML = "Visualize A* Algorithm";
+              }}
+            >
+              A* Shortest Path
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown title="Maze" id="basic-nav-dropdown">
@@ -44,6 +55,7 @@ export const Navbars = ({
           </NavDropdown>
           <Button
             id="Vizu"
+            className="btn"
             variant="info"
             onClick={() => {
               if (currentAlgo === "") {
@@ -52,15 +64,67 @@ export const Navbars = ({
                 visualizeBfs();
               } else if (currentAlgo === "Dijkstra") {
                 visualizeDijkstra();
+              } else if (currentAlgo === "AStar") {
+                visualizeAStar();
               }
             }}
           >
             Algorithm
           </Button>
-          <Button id="resetGrid" variant="info" onClick={() => resetGrid()}>
+          <Button
+
+
+
+
+                                                        id="resetGrid"
+
+
+
+
+                                                        className="btn"
+
+
+
+
+                                                        variant="info"
+
+
+
+
+                                                        onClick={() => resetGrid()}
+          
+          
+          
+          
+          >
             Clear Grid
           </Button>
-          <Button id="resetPath" variant="info" onClick={() => resetPath()}>
+          <Button
+           
+           
+           
+           
+            id="resetPath"
+           
+           
+           
+           
+            className="btn"
+           
+           
+           
+           
+            variant="info"
+           
+           
+           
+           
+            onClick={() => resetPath()}
+          
+          
+          
+          
+          >
             Clear Path
           </Button>
           <NavDropdown title="Wall or Weight" id="basic-nav-dropdown">
