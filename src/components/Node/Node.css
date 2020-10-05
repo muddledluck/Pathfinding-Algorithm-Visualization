@@ -6,15 +6,18 @@
 }
 
 .node-finish {
-  background-color: red;
+  background-image: url("./end.png");
+  background-size: 25px 25px;
 }
 
 .node-start {
-  background-color: green;
-  width: 25px;
-  height: 25px;
+  background-image: url("./start.png");
+  background-size: 25px 25px;
+  /* background-color: green; */
 }
-
+.node-at{
+  background-color: yellow;
+}
 .node-visited {
     animation-name: visitedAnimation;
     animation-duration: 1.5s;
@@ -53,7 +56,8 @@
   }
   
   .node-weight{
-    background-color: pink;
+    background-image: url("./weight.png");
+    background-size: 25px 25px;
   }
   .node-shortest-path {
     animation-name: shortestPath;

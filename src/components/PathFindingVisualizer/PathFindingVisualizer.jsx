@@ -9,10 +9,10 @@ import {
 import "./PathFindingVisualizer.css";
 
 const TOTAL_ROW = 21;
-const TOTAL_COL = 56;
+const TOTAL_COL = 55;
 
 const STARTING_ROW = 10;
-const STARTING_COL = 5;
+const STARTING_COL = 10;
 
 const ENDING_ROW = 10;
 const ENDING_COL = 45;
@@ -88,10 +88,18 @@ class PathFindingVisualizer extends React.Component {
     const resetPathAnimation = document.querySelectorAll(".node-shortest-path");
     const resetVisitedAnimation = document.querySelectorAll(".node-visited");
     for (let i = 0; i < resetVisitedAnimation.length; i++) {
-      resetVisitedAnimation[i].className = "node";
+      if (resetVisitedAnimation[i].classList[2] === "node-weight") {
+        resetVisitedAnimation[i].className = "node node-weight";
+      } else {
+        resetVisitedAnimation[i].className = "node";
+      }
     }
     for (let i = 0; i < resetPathAnimation.length; i++) {
-      resetPathAnimation[i].className = "node";
+      if (resetPathAnimation[i].classList[2] === "node-weight") {
+        resetPathAnimation[i].className = "node node-weight";
+      } else {
+        resetPathAnimation[i].className = "node";
+      }
     }
 
     document.getElementById(`node-${STARTING_ROW}-${STARTING_COL}`).className =
@@ -143,7 +151,21 @@ class PathFindingVisualizer extends React.Component {
       setTimeout(() => {
         const node = nodesInShortestOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
-          "node node-shortest-path";
+        "node node-shortest-path";
+            if (node.isWeighted) {
+              document.getElementById(
+                `node-${node.row}-${node.col}`
+              ).className = "node node-shortest-path node-weight";
+        }
+        if (node.isStart) {
+          document.getElementById(
+            `node-${node.row}-${node.col}`
+          ).className = "node node-shortest-path node-start";
+        } else if (node.isFinish) {
+          document.getElementById(
+            `node-${node.row}-${node.col}`
+          ).className = "node node-shortest-path node-finish";
+        }
       }, 50 * i);
     }
   }
@@ -153,14 +175,32 @@ class PathFindingVisualizer extends React.Component {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestOrder);
-        }, 10 * i);
+        }, 5 * i);
         return;
       }
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
+        setTimeout(() => {
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            "node node-visited";
+          if (node.isWeighted) {
+            document.getElementById(`node-${node.row}-${node.col}`).className =
+              "node node-visited node-weight";
+            
+          }
+          if (node.isStart) {
+            document.getElementById(
+              `node-${node.row}-${node.col}`
+            ).className = "node node-shortest-path node-start";
+          }else if (node.isFinish) {
+            document.getElementById(
+              `node-${node.row}-${node.col}`
+            ).className = "node node-shortest-path node-finish";
+          }
+        }, 5);
         document.getElementById(`node-${node.row}-${node.col}`).className =
-          "node node-visited";
-      }, 10 * i);
+          "node node-at";
+      }, 5 * i);
     }
   }
   visualizeDijkstra = () => {
@@ -175,12 +215,9 @@ class PathFindingVisualizer extends React.Component {
     // console.log([dist, forPathReconstruction, visitedNodesInOrder])
     const nodesInShortestOrder = getNodesInShortestPathOrderDijkstra(
       grid,
-
       dist,
-
       forPathReconstruction,
       startNode,
-
       endNode
     );
     this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);

@@ -53,8 +53,9 @@ function updateUnvisitedNeibours(
 			grid[neibours_row][neibours_col].isVisited = true;
       forPathReconstruction[grid[0].length * neibours_row + neibours_col] =
         grid[at_row][at_col];
-      visitedNodesInOrder.push(grid[at_row][at_col]);
+      // visitedNodesInOrder.push(grid[at_row][at_col]);
     }
+    visitedNodesInOrder.push(grid[at_row][at_col]);
   }
 }
 

@@ -64,9 +64,10 @@ function neiboursUnvisitedNode(grid, val, visitedNodesInOrder) {
     } else if (grid[at[0]][at[1]].isWall) {
       continue;
     } else if (grid[at[0]][at[1]].isWeighted) {
-      visitedNodesInOrder.push(grid[val[0]][val[1]]);;
-        weight = 10;
+      visitedNodesInOrder.push(grid[val[0]][val[1]]);
+        weight = 15;
     } else {
+      visitedNodesInOrder.push(grid[val[0]][val[1]]);
       weight = 1;
     }
     neibours.push([at, weight]);
