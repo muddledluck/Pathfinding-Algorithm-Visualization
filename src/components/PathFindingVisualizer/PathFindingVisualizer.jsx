@@ -83,6 +83,22 @@ class PathFindingVisualizer extends React.Component {
     this.setState({ grid });
   }
 
+  resetWeight = () => {
+    const { grid } = this.state
+    for (let row = 0; row < TOTAL_ROW; row++){
+      for (let col = 0; col < TOTAL_COL; col++){
+        grid[row][col].isWeighted = false;
+      }
+    }
+    let resetWeights = document.querySelector(".node-weight")
+    if (resetWeights === null) {
+      resetWeights = []
+    }
+    for (let i = 0; i < resetWeights.length; i++){
+      resetWeights[i].className = "node";
+    }
+    this.setState({ grid })
+  }
   resetPath = () => {
     const { grid } = this.state;
     for (let row = 0; row < TOTAL_ROW; row++) {
@@ -244,6 +260,7 @@ class PathFindingVisualizer extends React.Component {
 
   visualizeBFS = () => {
     this.resetPath();
+    
     let { grid } = this.state;
     const startNode = grid[STARTING_ROW][STARTING_COL];
     const endNode = grid[ENDING_ROW][ENDING_COL];
@@ -267,6 +284,7 @@ class PathFindingVisualizer extends React.Component {
           visualizeAStar={this.visualizeAStar}
           resetGrid={this.resetGrid}
           resetPath={this.resetPath}
+          resetWeight={this.resetWeight}
           
         ></Navbars>
         <div className="grid">

@@ -17,6 +17,9 @@ export function dijkstra(grid, startNode) {
     let { val, priorty } = queue.dequeue();
     let index = gridIndexToArrayIndex(grid[0].length, val[0], val[1]);
     grid[val[0]][val[1]].isVisited = true;
+    if (grid[val[0]][val[1]].isFinish) {
+      return [dist, forPathReconstruction, visitedNodesInOrder];
+    }
     if (dist[index] < priorty) {
       continue;
     }
@@ -34,9 +37,6 @@ export function dijkstra(grid, startNode) {
         visitedNodesInOrder.push(grid[val[0]][val[1]]);
         dist[at] = newDist;
         queue.enqueue(idx, newDist);
-      }
-      if (grid[val[0]][val[1]].isFinish) {
-        return [dist, forPathReconstruction, visitedNodesInOrder];
       }
     }
   }

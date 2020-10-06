@@ -7,7 +7,9 @@ import {
 function heuristic(nodeOne, nodeTwo) {
   let manhattanDistance =
     Math.abs(nodeOne[0] - nodeTwo[0]) + Math.abs(nodeOne[1] - nodeTwo[1]);
-  return manhattanDistance;
+  let diagonalDistance = Math.max(Math.abs(nodeOne[0] - nodeTwo[0]), Math.abs(nodeOne[1] - nodeTwo[1]))
+  let euclideanDistance = Math.sqrt(Math.pow((nodeOne[0] - nodeTwo[0]), 2) + Math.pow((nodeOne[1] - nodeTwo[1]), 2))
+  return euclideanDistance + manhattanDistance + diagonalDistance;
 }
 
 export function A_Star(grid, startNode, endNode) {
@@ -50,6 +52,7 @@ export function A_Star(grid, startNode, endNode) {
         new_gScore <
         gScore[gridIndexToArrayIndex(grid[0].length, neb[0], neb[1])]
       ) {
+        visitedNodesInOrder.push(grid[current[0]][current[1]])
         forPathReconstruntion[
           gridIndexToArrayIndex(grid[0].length, neb[0], neb[1])
         ] = grid[current[0]][current[1]];
@@ -59,6 +62,7 @@ export function A_Star(grid, startNode, endNode) {
         fScore[gridIndexToArrayIndex(grid[0].length, neb[0], neb[1])] =
           gScore[gridIndexToArrayIndex(grid[0].length, neb[0], neb[1])] +
           heuristic(neb, [endNode.row, endNode.col]);
+        
         if (!grid[neb[0]][neb[1]].isVisited) {
           openSet.enqueue(
             neb,

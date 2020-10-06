@@ -14,6 +14,7 @@ export const Navbars = ({
   visualizeAStar,
   resetGrid,
   resetPath,
+  resetWeight,
 }) => {
   return (
     <Navbar bg="primary" expand="lg">
@@ -35,6 +36,7 @@ export const Navbars = ({
               onClick={() => {
                 const algo = document.getElementById("Vizu");
                 currentAlgo = "BFS";
+                resetWeight();
                 algo.innerHTML = "Visualize BFS Algorithm (Unweighted)";
               }}
             >
@@ -50,9 +52,6 @@ export const Navbars = ({
               A* Shortest Path
             </NavDropdown.Item>
           </NavDropdown>
-          <NavDropdown title="Maze" id="basic-nav-dropdown">
-            <NavDropdown.Item>Generate Ranodm Maze</NavDropdown.Item>
-          </NavDropdown>
           <Button
             id="Vizu"
             className="btn"
@@ -61,6 +60,7 @@ export const Navbars = ({
               if (currentAlgo === "") {
                 document.getElementById("Vizu").innerHTML = "Select Algorithm";
               } else if (currentAlgo === "BFS") {
+                resetWeight();
                 visualizeBfs();
               } else if (currentAlgo === "Dijkstra") {
                 visualizeDijkstra();
