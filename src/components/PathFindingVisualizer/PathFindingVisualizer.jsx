@@ -220,7 +220,6 @@ class PathFindingVisualizer extends React.Component {
   }
 
   visualizeAStar = () => {
-    this.resetPath();
     let { grid } = this.state;
     const startNode = grid[STARTING_ROW][STARTING_COL];
     const endNode = grid[ENDING_ROW][ENDING_COL];
@@ -239,7 +238,6 @@ class PathFindingVisualizer extends React.Component {
     this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
   };
   visualizeDijkstra = () => {
-    this.resetPath();
     let { grid } = this.state;
     const startNode = grid[STARTING_ROW][STARTING_COL];
     const endNode = grid[ENDING_ROW][ENDING_COL];
@@ -259,7 +257,6 @@ class PathFindingVisualizer extends React.Component {
   };
 
   visualizeBFS = () => {
-    this.resetPath();
     
     let { grid } = this.state;
     const startNode = grid[STARTING_ROW][STARTING_COL];

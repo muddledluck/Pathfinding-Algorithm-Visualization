@@ -34,8 +34,12 @@ export function A_Star(grid, startNode, endNode) {
 
   while (openSet.length) {
     const { val } = openSet.dequeue();
+    if (grid[val[0]][val[1]].isVisited) {
+      continue
+    }
     const current = val;
     grid[current[0]][current[1]].isVisited = true;
+    
     if (current[0] === endNode.row && current[1] === endNode.col) {
       return [forPathReconstruntion, visitedNodesInOrder];
     }
@@ -52,7 +56,7 @@ export function A_Star(grid, startNode, endNode) {
         new_gScore <
         gScore[gridIndexToArrayIndex(grid[0].length, neb[0], neb[1])]
       ) {
-        visitedNodesInOrder.push(grid[current[0]][current[1]])
+        // visitedNodesInOrder.push(grid[current[0]][current[1]])
         forPathReconstruntion[
           gridIndexToArrayIndex(grid[0].length, neb[0], neb[1])
         ] = grid[current[0]][current[1]];
@@ -93,6 +97,7 @@ export function getNodesInShortestPathOrderAStar(
   }
   path.reverse();
   if (path[0] === startNode) {
+    console.log("A_Star Path Length: ",path.length)
     return path;
   } else {
     return [];

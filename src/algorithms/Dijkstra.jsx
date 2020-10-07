@@ -67,6 +67,7 @@ export function getNodesInShortestPathOrderDijkstra(
   }
   path.reverse();
   if (path[0] === startNode) {
+    console.log("DIjkstra Path Length: ", path.length)
     return path;
   } else {
     return [];

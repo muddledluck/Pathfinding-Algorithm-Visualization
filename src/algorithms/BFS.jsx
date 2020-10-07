@@ -66,7 +66,6 @@ export function getNodesInShortestPathOrderBFS(
   endNode
 ) {
   const path = [];
-	console.log("endNode", endNode)
 	for (
     let i = endNode;
     i != null;
@@ -75,8 +74,8 @@ export function getNodesInShortestPathOrderBFS(
     path.push(i);
   }
 	path.reverse();
-	console.log("path", path)
   if (path[0] === startNode) {
+    console.log("BFS(Unweighted) Path Length: ", path.length)
     return path;
   } else {
     return [];

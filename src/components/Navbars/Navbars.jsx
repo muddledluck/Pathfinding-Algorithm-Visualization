@@ -36,7 +36,6 @@ export const Navbars = ({
               onClick={() => {
                 const algo = document.getElementById("Vizu");
                 currentAlgo = "BFS";
-                resetWeight();
                 algo.innerHTML = "Visualize BFS Algorithm (Unweighted)";
               }}
             >
@@ -60,11 +59,14 @@ export const Navbars = ({
               if (currentAlgo === "") {
                 document.getElementById("Vizu").innerHTML = "Select Algorithm";
               } else if (currentAlgo === "BFS") {
+                resetPath();
                 resetWeight();
                 visualizeBfs();
               } else if (currentAlgo === "Dijkstra") {
+                resetPath();
                 visualizeDijkstra();
               } else if (currentAlgo === "AStar") {
+                resetPath();
                 visualizeAStar();
               }
             }}
