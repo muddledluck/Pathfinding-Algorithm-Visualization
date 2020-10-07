@@ -7,9 +7,9 @@ import {
 function heuristic(nodeOne, nodeTwo) {
   let manhattanDistance =
     Math.abs(nodeOne[0] - nodeTwo[0]) + Math.abs(nodeOne[1] - nodeTwo[1]);
-  let diagonalDistance = Math.max(Math.abs(nodeOne[0] - nodeTwo[0]), Math.abs(nodeOne[1] - nodeTwo[1]))
-  let euclideanDistance = Math.sqrt(Math.pow((nodeOne[0] - nodeTwo[0]), 2) + Math.pow((nodeOne[1] - nodeTwo[1]), 2))
-  return euclideanDistance + manhattanDistance + diagonalDistance;
+  // let diagonalDistance = Math.max(Math.abs(nodeOne[0] - nodeTwo[0]), Math.abs(nodeOne[1] - nodeTwo[1]))
+  // let euclideanDistance = Math.sqrt(Math.pow((nodeOne[0] - nodeTwo[0]), 2) + Math.pow((nodeOne[1] - nodeTwo[1]), 2))
+  return manhattanDistance;
 }
 
 export function A_Star(grid, startNode, endNode) {
