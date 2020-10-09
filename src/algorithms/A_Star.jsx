@@ -96,8 +96,16 @@ export function getNodesInShortestPathOrderAStar(
     path.push(i);
   }
   path.reverse();
+  let pathLength = 0;
+  for (let i = 0; i < path.length; i++) {
+    if (grid[path[i].row][path[i].col].isWeighted) {
+      pathLength = pathLength + 15;
+    } else {
+      pathLength = pathLength + 1;
+    }
+  }
   if (path[0] === startNode) {
-    console.log("A_Star Path Length: ",path.length)
+    console.log("A_Star Path Length: ", pathLength);
     return path;
   } else {
     return [];

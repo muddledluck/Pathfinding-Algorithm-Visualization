@@ -66,8 +66,16 @@ export function getNodesInShortestPathOrderDijkstra(
     path.push(i);
   }
   path.reverse();
+  let pathLength = 0;
+  for (let i = 0; i < path.length; i++) {
+    if (grid[path[i].row][path[i].col].isWeighted) {
+      pathLength = pathLength + 15;
+    } else {
+      pathLength = pathLength + 1;
+    }
+  }
   if (path[0] === startNode) {
-    console.log("DIjkstra Path Length: ", path.length)
+    console.log("DIjkstra Path Length: ", pathLength)
     return path;
   } else {
     return [];

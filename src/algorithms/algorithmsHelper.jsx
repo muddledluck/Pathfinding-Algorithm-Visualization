@@ -1,16 +1,33 @@
+import {digonalPath} from "../components/Navbars/Navbars";
+
 export function gridIndexToArrayIndex(totalCol, currentRow, currentCol) {
     return totalCol * currentRow + currentCol;
 }
 
 export function neiboursUnvisitedNode(grid, val, visitedNodesInOrder) {
-    const direction = [
+  let direction;
+  if (digonalPath) {
+    direction = [
       [-1, 0],
       [0, -1],
       [1, 0],
       [0, 1],
+      [-1, -1],
+      [1, -1],
+      [-1, 1],
+      [1, 1],
     ];
+  } else {
+      direction = [
+        [-1, 0],
+        [0, -1],
+        [1, 0],
+        [0, 1],
+      ];
+  
+  }
     const neibours = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < direction.length; i++) {
       let at = [val[0] + direction[i][0], val[1] + direction[i][1]];
       let weight;
   

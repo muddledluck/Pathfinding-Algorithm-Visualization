@@ -3,11 +3,15 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbars.css";
 
 let currentAlgo = "";
 export let wallOrWeight = "wall";
+export let digonalPath = false;
+
+
 export const Navbars = ({
   visualizeBfs,
   visualizeDijkstra,
@@ -16,6 +20,26 @@ export const Navbars = ({
   resetPath,
   resetWeight,
 }) => {
+
+  const onBtnClick = () => {
+    if (currentAlgo === "") {
+      document.getElementById("Vizu").innerHTML = "Select Algorithm";
+    } else if (currentAlgo === "BFS") {
+      resetPath();
+      resetWeight();
+      visualizeBfs();
+      
+  
+    } else if (currentAlgo === "Dijkstra") {
+      resetPath();
+      visualizeDijkstra();
+    } else if (currentAlgo === "AStar") {
+      resetPath();
+      visualizeAStar();
+    }
+    
+  }
+
   return (
     <Navbar bg="primary" expand="lg">
       <Navbar.Brand>PathFinding Visulizer</Navbar.Brand>
@@ -55,81 +79,27 @@ export const Navbars = ({
             id="Vizu"
             className="btn"
             variant="info"
-            onClick={() => {
-              if (currentAlgo === "") {
-                document.getElementById("Vizu").innerHTML = "Select Algorithm";
-              } else if (currentAlgo === "BFS") {
-                resetPath();
-                resetWeight();
-                visualizeBfs();
-              } else if (currentAlgo === "Dijkstra") {
-                resetPath();
-                visualizeDijkstra();
-              } else if (currentAlgo === "AStar") {
-                resetPath();
-                visualizeAStar();
-              }
-            }}
+            onClick={() => onBtnClick()}
           >
             Algorithm
           </Button>
           <Button
-
-
-
-
-                                                        id="resetGrid"
-
-
-
-
-                                                        className="btn"
-
-
-
-
-                                                        variant="info"
-
-
-
-
-                                                        onClick={() => resetGrid()}
-          
-          
-          
-          
+            id="resetGrid"
+            className="btn"
+            variant="info"
+            onClick={() => resetGrid()}
           >
             Clear Grid
           </Button>
           <Button
-           
-           
-           
-           
             id="resetPath"
-           
-           
-           
-           
             className="btn"
-           
-           
-           
-           
             variant="info"
-           
-           
-           
-           
             onClick={() => resetPath()}
-          
-          
-          
-          
           >
             Clear Path
           </Button>
-          <NavDropdown title="Wall or Weight" id="basic-nav-dropdown">
+          <NavDropdown title="Wall or Weight" id="basic-nav-dropdown1">
             <NavDropdown.Item
               onClick={() => {
                 wallOrWeight = "wall";
@@ -147,6 +117,17 @@ export const Navbars = ({
           </NavDropdown>
         </Nav>
       </Navbar.Collapse>
+      <Form>
+        <Form.Check 
+          type="switch"
+          id="custom-switch"
+          label="Enable Digonal Path"
+          onClick={() => {
+            digonalPath = !digonalPath
+            }}
+       />
+      </Form>
+      
     </Navbar>
   );
 };
