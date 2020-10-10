@@ -10,6 +10,7 @@ import {
   A_Star,
   getNodesInShortestPathOrderAStar,
 } from "../../algorithms/A_Star";
+import {GreedyBFS, getNodeInShortestPathOrderGreedyBFS} from "../../algorithms/GreedyBestFirstSearch"
 
 import "./PathFindingVisualizer.css";
 
@@ -219,6 +220,20 @@ class PathFindingVisualizer extends React.Component {
     }
   }
 
+  visualizeGreedyBFS = () => {
+    let { grid } = this.state;
+    const startNode = grid[STARTING_ROW][STARTING_COL];
+    const endNode = grid[ENDING_ROW][ENDING_COL]
+    const [forPathReconstruction, visitedNodesInOrder] = GreedyBFS(grid, startNode, endNode)
+    const nodesInShortestOrder = getNodeInShortestPathOrderGreedyBFS(
+      grid,
+      forPathReconstruction,
+      startNode,
+      endNode
+    );
+    this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+  }
+
   visualizeAStar = () => {
     let { grid } = this.state;
     const startNode = grid[STARTING_ROW][STARTING_COL];
@@ -279,6 +294,7 @@ class PathFindingVisualizer extends React.Component {
           visualizeBfs={this.visualizeBFS}
           visualizeDijkstra={this.visualizeDijkstra}
           visualizeAStar={this.visualizeAStar}
+          visualizeGreedyBFS={this.visualizeGreedyBFS}
           resetGrid={this.resetGrid}
           resetPath={this.resetPath}
           resetWeight={this.resetWeight}

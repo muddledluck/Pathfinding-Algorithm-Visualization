@@ -16,6 +16,7 @@ export const Navbars = ({
   visualizeBfs,
   visualizeDijkstra,
   visualizeAStar,
+  visualizeGreedyBFS,
   resetGrid,
   resetPath,
   resetWeight,
@@ -36,6 +37,9 @@ export const Navbars = ({
     } else if (currentAlgo === "AStar") {
       resetPath();
       visualizeAStar();
+    } else if (currentAlgo === "GreedyBFS") {
+      resetPath();
+      visualizeGreedyBFS();
     }
     
   }
@@ -73,6 +77,15 @@ export const Navbars = ({
               }}
             >
               A* Shortest Path
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              onClick={() => {
+                const algo = document.getElementById("Vizu");
+                currentAlgo = "GreedyBFS";
+                algo.innerHTML = "Visualize Greedy Algorithm";
+              }}
+            >
+              Greedy Best First Search
             </NavDropdown.Item>
           </NavDropdown>
           <Button

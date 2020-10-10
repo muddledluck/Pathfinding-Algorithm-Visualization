@@ -30,7 +30,10 @@ export function A_Star(grid, startNode, endNode) {
       gridIndexToArrayIndex(grid[0].length, startNode.row, startNode.col)
     ] + heuristic([startNode.row, startNode.col], [endNode.row, endNode.col]);
 
-  openSet.enqueue([startNode.row, startNode.col], fScore[0]);
+  openSet.enqueue(
+    [startNode.row, startNode.col],
+    fScore[gridIndexToArrayIndex(grid[0].length, startNode.row, startNode.col)]
+  );
 
   while (openSet.length) {
     const { val } = openSet.dequeue();
