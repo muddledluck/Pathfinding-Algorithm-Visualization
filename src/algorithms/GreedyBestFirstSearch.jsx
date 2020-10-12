@@ -54,7 +54,7 @@ export function GreedyBFS(grid, startNode, endNode) {
         forPathReconstruntion[
           gridIndexToArrayIndex(grid[0].length, neb[0], neb[1])
         ] = grid[current[0]][current[1]];
-        hScore[gridIndexToArrayIndex(grid[0].length, neb[0], neb[1])] = heuristic(neb, [endNode.row, endNode.col])
+        hScore[gridIndexToArrayIndex(grid[0].length, neb[0], neb[1])] = new_hScore
         if (!grid[neb[0]][neb[1]].isVisited) {
           openSet.enqueue(neb, new_hScore);
         }

@@ -14,14 +14,14 @@ import {GreedyBFS, getNodeInShortestPathOrderGreedyBFS} from "../../algorithms/G
 
 import "./PathFindingVisualizer.css";
 
-const TOTAL_ROW = 26;
+const TOTAL_ROW = 31;
 const TOTAL_COL = 56;
 
-const STARTING_ROW = 13;
-const STARTING_COL = 10;
+let STARTING_ROW = 15;
+let STARTING_COL = 5;
 
-const ENDING_ROW = 13;
-const ENDING_COL = 45;
+let ENDING_ROW = 15;
+let ENDING_COL = 50;
 
 const getInitialGrid = () => {
   const grid = [];
@@ -69,6 +69,21 @@ const getNewGridWithWeight = (grid, row, col) => {
   return newGrid;
 }
 
+const getNewGridWithNewStart = (grid, row, col) => {
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = { ...node, isStart: !node.isStart };
+  newGrid[row][col] = newNode;
+  return newGrid;
+};
+
+const getNewGridWithNewFinish = (grid, row, col) => {
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = { ...node, isFinish: !node.isFinish };
+  newGrid[row][col] = newNode;
+  return newGrid;
+};
 
 class PathFindingVisualizer extends React.Component {
   constructor(props) {
@@ -76,6 +91,8 @@ class PathFindingVisualizer extends React.Component {
     this.state = {
       grid: [],
       mouseIsPressed: false,
+      isStartSelected: [[STARTING_ROW, STARTING_COL], false],
+      isFinishSelected: [[ENDING_ROW, ENDING_COL], false],
     };
   }
 
@@ -137,7 +154,11 @@ class PathFindingVisualizer extends React.Component {
   };
 
   handleMouseDown = (row, col) => {
-    if (wallOrWeight === "wall") {
+    if (this.state.grid[row][col].isStart) {
+      this.setState({ isStartSelected: [[STARTING_ROW, STARTING_COL], true] });
+    } else if (this.state.grid[row][col].isFinish) {
+      this.setState({ isFinishSelected: [[ENDING_ROW, ENDING_COL], true] });
+    } else if (wallOrWeight === "wall") {
       if (!this.state.grid[row][col].isFinish) {
         const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
         this.setState({ grid: newGrid, mouseIsPressed: true });
@@ -151,7 +172,31 @@ class PathFindingVisualizer extends React.Component {
   };
 
   handleMouseEnter = (row, col) => {
-    if (wallOrWeight === "wall") {
+    if (this.state.isStartSelected[1]) {
+      const { grid, isStartSelected } = this.state;
+      grid[isStartSelected[0][0]][isStartSelected[0][1]].isStart = false;
+      grid[isStartSelected[0][0]][isStartSelected[0][1]].isWall = false;
+      grid[isStartSelected[0][0]][isStartSelected[0][1]].isWeighted = false;
+      const newGrid = getNewGridWithNewStart(this.state.grid, row, col);
+      STARTING_COL = col;
+      STARTING_ROW = row;
+      this.setState({
+        grid: newGrid,
+        isStartSelected: [[STARTING_ROW, STARTING_COL], true],
+      });
+    } else if (this.state.isFinishSelected[1]) {
+      const { grid, isFinishSelected } = this.state;
+      grid[isFinishSelected[0][0]][isFinishSelected[0][1]].isFinish = false;
+      grid[isFinishSelected[0][0]][isFinishSelected[0][1]].isWall = false;
+      grid[isFinishSelected[0][0]][isFinishSelected[0][1]].isWeighted = false;
+      const newGrid = getNewGridWithNewFinish(this.state.grid, row, col);
+      ENDING_COL = col;
+      ENDING_ROW = row;
+      this.setState({
+        grid: newGrid,
+        isFinishSelected: [[ENDING_ROW, ENDING_COL], true],
+      });
+    } else if (wallOrWeight === "wall") {
       if (this.state.mouseIsPressed && !this.state.grid[row][col].isFinish) {
         const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
         this.setState({ grid: newGrid });
@@ -165,7 +210,11 @@ class PathFindingVisualizer extends React.Component {
   };
 
   handleMouseUp = () => {
-    this.setState({ mouseIsPressed: false });
+    this.setState({
+      mouseIsPressed: false,
+      isStartSelected: [[STARTING_ROW, STARTING_COL], false],
+      isFinishSelected: [[ENDING_ROW, ENDING_COL], false],
+    });
   };
 
   animateShortestPath(nodesInShortestOrder) {
