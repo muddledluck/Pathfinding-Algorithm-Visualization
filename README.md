@@ -8,7 +8,7 @@ This application supports the following algorithms:
 
 **Dijkstra's Algorithm** (weighted): The father of pathfinding algorithms; guarantees the shortest path
 
-**A* Search** (weighted): Best pathfinding algorithm; uses heuristics to guarantee the shortest path much faster than Dijkstra's Algorithm
+**A\* Search** (weighted): Best pathfinding algorithm; uses heuristics to guarantee the shortest path much faster than Dijkstra's Algorithm
 
 **Greedy Best-first Search** (weighted): A faster, more heuristic-heavy version of A*; does not guarantee the shortest path
 
