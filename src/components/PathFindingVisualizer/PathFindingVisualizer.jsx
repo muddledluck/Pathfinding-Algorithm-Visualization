@@ -23,6 +23,7 @@ let STARTING_COL = 5;
 let ENDING_ROW = 15;
 let ENDING_COL = 50;
 
+
 const getInitialGrid = () => {
   const grid = [];
   for (let row = 0; row < TOTAL_ROW; row++) {
@@ -239,12 +240,15 @@ class PathFindingVisualizer extends React.Component {
   }
 
   animateAlgo(visitedNodesInOrder, nodesInShortestOrder) {
+    let time = 0;
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestOrder);
         }, 5 * i);
-        return;
+        time = time + (50 * nodesInShortestOrder.length);
+        return time;
       }
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
@@ -266,10 +270,13 @@ class PathFindingVisualizer extends React.Component {
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node node-at";
       }, 5 * i);
+      time = time + 5;
     }
+    
   }
 
   visualizeGreedyBFS = () => {
+    
     let { grid } = this.state;
     const startNode = grid[STARTING_ROW][STARTING_COL];
     const endNode = grid[ENDING_ROW][ENDING_COL]
@@ -280,7 +287,8 @@ class PathFindingVisualizer extends React.Component {
       startNode,
       endNode
     );
-    this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+    const timeTaken = this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+    return timeTaken
   }
 
   visualizeAStar = () => {
@@ -299,7 +307,8 @@ class PathFindingVisualizer extends React.Component {
       startNode,
       endNode
     );
-    this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+    const timeTaken = this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+    return timeTaken
   };
   visualizeDijkstra = () => {
     let { grid } = this.state;
@@ -317,7 +326,8 @@ class PathFindingVisualizer extends React.Component {
       startNode,
       endNode
     );
-    this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+    const timeTaken = this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+    return timeTaken;
   };
 
   visualizeBFS = () => {
@@ -332,7 +342,8 @@ class PathFindingVisualizer extends React.Component {
       startNode,
       endNode
     );
-    this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+    const timeTaken = this.animateAlgo(visitedNodesInOrder, nodesInShortestOrder);
+    return timeTaken;
   };
 
   render() {
@@ -347,7 +358,6 @@ class PathFindingVisualizer extends React.Component {
           resetGrid={this.resetGrid}
           resetPath={this.resetPath}
           resetWeight={this.resetWeight}
-          
         ></Navbars>
         <div className="grid">
           {grid.map((row, rowIdx) => {

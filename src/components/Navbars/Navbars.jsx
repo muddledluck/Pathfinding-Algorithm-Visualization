@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -11,6 +12,9 @@ let currentAlgo = "";
 export let wallOrWeight = "wall";
 export let digonalPath = false;
 
+function algorithmCompletedTime(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
 export const Navbars = ({
   visualizeBfs,
@@ -22,35 +26,46 @@ export const Navbars = ({
   resetWeight,
 }) => {
 
+  const [isRuning, setRuning] = useState(false);
+  const [time, setTime] = useState(0);
+
   const onBtnClick = () => {
+    let time = 0;
     if (currentAlgo === "") {
       document.getElementById("Vizu").innerHTML = "Select Algorithm";
     } else if (currentAlgo === "BFS") {
       resetPath();
       resetWeight();
-      visualizeBfs();
-      
-  
+      time = visualizeBfs();
     } else if (currentAlgo === "Dijkstra") {
       resetPath();
-      visualizeDijkstra();
+      time = visualizeDijkstra();
     } else if (currentAlgo === "AStar") {
       resetPath();
-      visualizeAStar();
+      time = visualizeAStar();
     } else if (currentAlgo === "GreedyBFS") {
       resetPath();
-      visualizeGreedyBFS();
+      time = visualizeGreedyBFS();
     }
-    
-  }
+    setTime(time);
+  };
+  useEffect(() => {
+    if (isRuning) {
+      algorithmCompletedTime(time).then(() => {
+        setRuning(false);
+      });
+    }
+  }, [isRuning, time]);
+
+  const handleClick = () => setRuning(true);
 
   return (
-    <Navbar bg="primary" expand="lg">
+    <Navbar bg="dark" variant="dark">
       <Navbar.Brand>PathFinding Visulizer</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <NavDropdown title="Algorithm" id="basic-nav-dropdown">
+        <Nav className="mr-auto" >
+          <NavDropdown title="Algorithm" id="basic-nav-dropdown" disabled={isRuning}>
             <NavDropdown.Item
               onClick={() => {
                 const algo = document.getElementById("Vizu");
@@ -92,7 +107,11 @@ export const Navbars = ({
             id="Vizu"
             className="btn"
             variant="info"
-            onClick={() => onBtnClick()}
+            disabled={isRuning}
+            onClick={() => {
+              onBtnClick();
+              handleClick();
+            }}
           >
             Algorithm
           </Button>
@@ -100,7 +119,11 @@ export const Navbars = ({
             id="resetGrid"
             className="btn"
             variant="info"
-            onClick={() => resetGrid()}
+            disabled={isRuning}
+            onClick={() => {
+              resetGrid();
+              handleClick();
+            }}
           >
             Clear Grid
           </Button>
@@ -108,11 +131,15 @@ export const Navbars = ({
             id="resetPath"
             className="btn"
             variant="info"
-            onClick={() => resetPath()}
+            disabled={isRuning}
+            onClick={() => {
+              resetPath();
+              handleClick();
+            }}
           >
             Clear Path
           </Button>
-          <NavDropdown title="Wall or Weight" id="basic-nav-dropdown1">
+          <NavDropdown title="Wall or Weight" id="basic-nav-dropdown1" disabled={isRuning}>
             <NavDropdown.Item
               onClick={() => {
                 wallOrWeight = "wall";
@@ -131,16 +158,18 @@ export const Navbars = ({
         </Nav>
       </Navbar.Collapse>
       <Form>
-        <Form.Check 
+        <Form.Check
           type="switch"
           id="custom-switch"
-          label="Enable Digonal Path"
+          label={
+            <span style={{"color":"white"}}>Enable Digonal Path</span>
+          }
+          disabled={isRuning}
           onClick={() => {
-            digonalPath = !digonalPath
-            }}
-       />
+            digonalPath = !digonalPath;
+          }}
+        />
       </Form>
-      
     </Navbar>
   );
 };
