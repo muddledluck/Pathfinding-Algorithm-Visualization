@@ -28,26 +28,26 @@ export const Navbars = ({
 
   const [isRuning, setRuning] = useState(false);
   const [time, setTime] = useState(0);
+  let Time = 0;
 
   const onBtnClick = () => {
-    let time = 0;
     if (currentAlgo === "") {
       document.getElementById("Vizu").innerHTML = "Select Algorithm";
     } else if (currentAlgo === "BFS") {
       resetPath();
       resetWeight();
-      time = visualizeBfs();
+      Time = visualizeBfs();
     } else if (currentAlgo === "Dijkstra") {
       resetPath();
-      time = visualizeDijkstra();
+      Time = visualizeDijkstra();
     } else if (currentAlgo === "AStar") {
       resetPath();
-      time = visualizeAStar();
+      Time = visualizeAStar();
     } else if (currentAlgo === "GreedyBFS") {
       resetPath();
-      time = visualizeGreedyBFS();
+      Time = visualizeGreedyBFS();
     }
-    setTime(time);
+    setTime(Time);
   };
   useEffect(() => {
     if (isRuning) {
@@ -122,7 +122,9 @@ export const Navbars = ({
             disabled={isRuning}
             onClick={() => {
               resetGrid();
+              setTime(1)
               handleClick();
+              console.log(Time)
             }}
           >
             Clear Grid
@@ -134,6 +136,7 @@ export const Navbars = ({
             disabled={isRuning}
             onClick={() => {
               resetPath();
+              setTime(1)
               handleClick();
             }}
           >
@@ -143,6 +146,7 @@ export const Navbars = ({
             <NavDropdown.Item
               onClick={() => {
                 wallOrWeight = "wall";
+                setTime(1)
               }}
             >
               Wall
@@ -150,6 +154,7 @@ export const Navbars = ({
             <NavDropdown.Item
               onClick={() => {
                 wallOrWeight = "weight";
+                setTime(1)
               }}
             >
               Weight
@@ -167,6 +172,7 @@ export const Navbars = ({
           disabled={isRuning}
           onClick={() => {
             digonalPath = !digonalPath;
+            setTime(1)
           }}
         />
       </Form>
